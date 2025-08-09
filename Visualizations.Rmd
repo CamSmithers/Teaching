@@ -2,7 +2,9 @@
 title: "Visualizations"
 author: "Cam Smithers"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -31,12 +33,12 @@ shots_hist
 ```
 
 ```{r}
-team_shots_box <- ggplot(visual_data, aes(x = team_display, 
-                                          y = team_fga, 
+team_shots_box <- ggplot(visual_data, aes(x = team_fga, 
+                                          y = team_display, 
                                           fill = as.factor(team_display))) +
     geom_boxplot(color = "black") +
-    labs(x = "Team Name",
-         y = "Team Field Goal Attempts",
+    labs(y = "Team Name",
+         x = "Team Field Goal Attempts",
          title = "Boxplots of Team FGAs",
          fill = "Team") +
     theme_classic()
