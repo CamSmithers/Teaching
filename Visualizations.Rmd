@@ -1,0 +1,60 @@
+---
+title: "Visualizations"
+author: "Cam Smithers"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+visual_data <-readRDS("visual_data.rds")
+```
+
+```{r}
+shots_hist <- ggplot(visual_data, aes(team_fga)) +
+    geom_histogram(bins = 30,
+                   color = "black",
+                   fill = "lightblue") +
+    labs(x = "Team Field Goal Attempts",
+         y = "Count",
+         title = "Distribution of FGAs") +
+    theme_classic()
+
+shots_hist
+```
+
+```{r}
+team_shots_box <- ggplot(visual_data, aes(x = team_display, 
+                                          y = team_fga, 
+                                          fill = as.factor(team_display))) +
+    geom_boxplot(color = "black") +
+    labs(x = "Team Name",
+         y = "Team Field Goal Attempts",
+         title = "Boxplots of Team FGAs",
+         fill = "Team") +
+    theme_classic()
+
+team_shots_box
+```
+
+```{r}
+fgpct_to_pts <- ggplot(visual_data, aes(x = team_efgpct,
+                                        y = team_offrating,
+                                        color = team_display)) +
+    geom_point() +
+    labs(x = "Effective Field Goal Percentage",
+         y = "Team Offensive Rating",
+         title = "3PA vs Offensive Rating",
+         color = "Team Name") +
+    theme_classic()
+
+fgpct_to_pts
+```
+
