@@ -20,6 +20,24 @@ visual_data <-readRDS("visual_data.rds")
 ```
 
 ```{r}
+win_vs_loss <- ggplot(visual_data %>%
+                        filter(team_display == "DEN"|
+                              team_display == "HOU"|
+                              team_display == "PHI"|
+                              team_display == "DET"|
+                              team_display == "NYK") %>%
+                        drop_na(outcome_2_factor),
+                      aes(x = outcome_2_factor, fill = team_display)) +
+  geom_bar(position = "dodge", color = "black") +
+  theme_classic() +
+  labs(title = "Team Wins & Losses",
+       y = "Count",
+       x = "Game Outcome",
+       fill = "Team")
+win_vs_loss
+```
+
+```{r warning=FALSE}
 shots_hist <- ggplot(visual_data, aes(team_fga)) +
     geom_histogram(bins = 30,
                    color = "black",
@@ -33,7 +51,29 @@ shots_hist
 ```
 
 ```{r}
-team_shots_box <- ggplot(visual_data, aes(x = team_fga, 
+
+offrtg_hist <- ggplot(visual_data, aes(team_offrating)) +
+  geom_histogram(bins = 30,
+                 color = "black",
+                 fill = "magenta") +
+  geom_vline(xintercept = 113.3, color = "black",
+             linetype = "dashed", linewidth = 1) +
+  labs(x = "Team Offensive Rating",
+       y = "Count",
+       title = "Distribution of Offensive Performance") +
+  theme_classic()
+
+offrtg_hist
+```
+
+
+```{r warning=FALSE}
+team_shots_box <- ggplot(visual_data %>%
+                       filter(team_display == "DEN"|
+                              team_display == "HOU"|
+                              team_display == "PHI"|
+                              team_display == "DET"|
+                              team_display == "NYK"), aes(x = team_fga, 
                                           y = team_display, 
                                           fill = as.factor(team_display))) +
     geom_boxplot(color = "black") +
@@ -46,17 +86,40 @@ team_shots_box <- ggplot(visual_data, aes(x = team_fga,
 team_shots_box
 ```
 
-```{r}
-fgpct_to_pts <- ggplot(visual_data, aes(x = team_efgpct,
+```{r warning=FALSE}
+fgpct_to_pts <- ggplot(visual_data %>%
+                       filter(team_display == "DEN"|
+                              team_display == "HOU"|
+                              team_display == "PHI"|
+                              team_display == "DET"|
+                              team_display == "NYK"), aes(x = team_efgpct,
                                         y = team_offrating,
                                         color = team_display)) +
     geom_point() +
     labs(x = "Effective Field Goal Percentage",
          y = "Team Offensive Rating",
-         title = "3PA vs Offensive Rating",
+         title = "Effective FG % vs Offensive Rating",
          color = "Team Name") +
     theme_classic()
 
 fgpct_to_pts
 ```
 
+```{r warning=FALSE}
+netrtg_vs_time <- ggplot(visual_data%>%
+                           filter(team_display == "PHI"
+                                  | team_display == "CLE"
+                                  | team_display == "DAL"
+                                  | team_display == "PHX"
+                                  | team_display == "OKC"),
+                         aes(x = team_date,
+                             y = team_cumsum_win,
+                             color = team_display)) +
+  geom_line(linewidth = 1) +
+  theme_classic() +
+  labs(title = "Wins During the Season (2024-25)",
+       x = "Time", y = "Win Total",
+       color = "Team")
+
+netrtg_vs_time
+```
